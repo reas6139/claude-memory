@@ -1,5 +1,7 @@
 # claude-memory
 
+> **Archived 2026-09-23.** Claude Code now ships this four-type, frontmatter-file memory convention natively in its auto-memory prompt, so the plugin's core is redundant with stock. The author's current memory design (a content-bearing working file over a graph store with a single mechanical write path) is documented in the [persistent-agent-guide memory chapter](https://github.com/tars23364-bit/persistent-agent-guide/blob/main/docs/02-memory.md). The when-to-save decision tree in `skills/structured-memory/references/decision-tree.md` is still a fine read.
+
 A Claude Code plugin that adds structured, categorized memory to your projects.
 
 ## What it does
