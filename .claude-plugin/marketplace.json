@@ -1,0 +1,13 @@
+{
+  "name": "reas6139-claude-memory",
+  "description": "Rea's copy of claude-memory, so a branch can be added as a marketplace",
+  "owner": { "name": "reas6139" },
+  "plugins": [
+    {
+      "name": "claude-memory",
+      "description": "Structured memory with dated notes marked not verified as current",
+      "version": "1.0.0",
+      "source": "./"
+    }
+  ]
+}
