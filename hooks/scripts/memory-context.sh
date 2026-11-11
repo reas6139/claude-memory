@@ -36,7 +36,7 @@ for f in $RECENT; do
     NAME=$(basename "$f" .md)
     # Extract description from frontmatter
     DESC=$(grep -m1 "^description:" "$f" 2>/dev/null | sed 's/^description: *//')
-    TYPE=$(grep -m1 "^type:" "$f" 2>/dev/null | sed 's/^type: *//')
+    TYPE=$(grep -m1 -E "^[[:space:]]*type:" "$f" 2>/dev/null | sed -E 's/^[[:space:]]*type: *//')
     SAVED=$(date -r "$f" +%Y-%m-%d 2>/dev/null)
     if [ -n "$DESC" ]; then
         CONTEXT="${CONTEXT}- **${NAME}** (${TYPE}, saved ${SAVED}): ${DESC}\n"
