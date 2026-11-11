@@ -31,14 +31,15 @@ RECENT=$(echo "$MEMORY_FILES" | xargs ls -t 2>/dev/null | head -5)
 [ -z "$RECENT" ] && exit 0
 
 # Build context injection
-CONTEXT="## Recent Memories\n"
+CONTEXT="## Saved notes (old, NOT VERIFIED as current: check live state before relying on any of them)\n"
 for f in $RECENT; do
     NAME=$(basename "$f" .md)
     # Extract description from frontmatter
     DESC=$(grep -m1 "^description:" "$f" 2>/dev/null | sed 's/^description: *//')
     TYPE=$(grep -m1 "^type:" "$f" 2>/dev/null | sed 's/^type: *//')
+    SAVED=$(date -r "$f" +%Y-%m-%d 2>/dev/null)
     if [ -n "$DESC" ]; then
-        CONTEXT="${CONTEXT}- **${NAME}** (${TYPE}): ${DESC}\n"
+        CONTEXT="${CONTEXT}- **${NAME}** (${TYPE}, saved ${SAVED}): ${DESC}\n"
     fi
 done
 
