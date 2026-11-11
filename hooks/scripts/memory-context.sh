@@ -6,15 +6,18 @@
 # Find the project memory directory from Claude Code's project path
 # Claude Code sets CLAUDE_PROJECT_DIR or we derive from cwd
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
-SAFE_PATH=$(echo "$PROJECT_DIR" | sed 's|/|-|g; s|^-||')
-MEMORY_DIR="$HOME/.claude/projects/$SAFE_PATH/memory"
-
-# Fall back: check if MEMORY.md exists in the detected path
-if [ ! -d "$MEMORY_DIR" ]; then
-    # Try the current working directory name
-    SAFE_PATH=$(echo "$(pwd)" | sed 's|/|-|g; s|^-||')
-    MEMORY_DIR="$HOME/.claude/projects/$SAFE_PATH/memory"
-fi
+# Claude Code names the folder after the path with every slash as a dash, KEEPING the leading dash
+# (for example /home/user becomes -home-user). Try that first, then the dash-less spelling, then the cwd.
+MEMORY_DIR=""
+for P in "$PROJECT_DIR" "$(pwd)"; do
+    SAFE_PATH=$(echo "$P" | sed 's|/|-|g')
+    for C in "$SAFE_PATH" "${SAFE_PATH#-}"; do
+        if [ -d "$HOME/.claude/projects/$C/memory" ]; then
+            MEMORY_DIR="$HOME/.claude/projects/$C/memory"
+            break 2
+        fi
+    done
+done
 
 [ ! -d "$MEMORY_DIR" ] && exit 0
 
